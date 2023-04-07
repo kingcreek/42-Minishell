@@ -6,7 +6,7 @@
 /*   By: imurugar <imurugar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 21:22:07 by imurugar          #+#    #+#             */
-/*   Updated: 2023/04/06 21:27:10 by imurugar         ###   ########.fr       */
+/*   Updated: 2023/04/07 10:13:41 by imurugar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	print_error(int err, char *s)
 {
 	if (err == ERR_CMD)
 	{
-		printf("%s: command not found\n");
+		printf("%s: command not found\n", s);
 		exit(127);
 	}
 	else if (err == ERR_MALLOC)

@@ -6,7 +6,7 @@
 #    By: imurugar <imurugar@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/04 15:47:46 by imurugar          #+#    #+#              #
-#    Updated: 2023/04/06 22:00:17 by imurugar         ###   ########.fr        #
+#    Updated: 2023/04/07 10:31:39 by imurugar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,8 @@ SRCS_DIR	= ./src/
 OBJ_DIR 	= ./obj/
 INC_DIR		= ./inc/
 
-UTILS_DIR = ./$(SRCS_DIR)/utils/
+UTILS_DIR =	 utils/
+SIGNAL_DIR = signal/
 
 # /* ~~~~~~~ FILES ~~~~~~~ */
 INC =	minishell.h
@@ -24,6 +25,8 @@ SRCS	=	main.c \
 			lexer.c \
 			executor.c \
 			parser.c \
+			$(UTILS_DIR)error.c \
+			$(SIGNAL_DIR)handle_signals.c \
 
 # /* ~~~~~~~ INCLUDING LIBFT ~~~~~~~ */
 LIBFT_DIR = libft
@@ -36,6 +39,7 @@ OBJ_FILES	= $(SRCS:.c=.o)
 SRC = $(addprefix $(SRCS_DIR), $(SRCS))
 OBJS = $(addprefix $(OBJ_DIR), $(OBJ_FILES))
 INCLUDES = $(addprefix $(INC_DIR), $(INC))
+OBJ_DIRS := $(sort $(dir $(OBJS)))
 
 # /* ~~~~~~~ TESTING FLAGS ~~~~~~~ */
 SANITIZE =
@@ -58,11 +62,16 @@ PURPLE:="\033[1;35m"
 CYAN:="\033[1;36m"
 EOC:="\033[0;0m"
 
+# /* ~~~~~~~ GENERATE DIRS ~~~~~~~ */
+.SECONDEXPANSION:
+$(OBJ_DIR)/%/.:
+    $(shell mkdir -p $(OBJ_DIRS))
+	
 all: obj ${NAME}		
 
 obj:
 	@mkdir -p $(OBJ_DIR)
-	
+
 $(OBJ_DIR)%.o:$(SRCS_DIR)%.c $(INCLUDES)
 	$(GCC) $(CFLAGS) -I $(INC_DIR) -o $@ -c $<
 
