@@ -1,34 +1,54 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: imurugar <imurugar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/06 21:22:07 by imurugar          #+#    #+#             */
-/*   Updated: 2023/04/13 14:22:31 by imurugar         ###   ########.fr       */
+/*   Created: 2023/04/11 02:02:51 by imurugar          #+#    #+#             */
+/*   Updated: 2023/04/11 16:46:34 by imurugar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	print_error(int error_code, char *content)
+void	free_2d_str(char **lst)
 {
-	if (error_code == 1)
+	char	*n1;
+
+	if (!lst)
+		return ;
+	while (*lst)
 	{
-		printf("\033[91m%s\033[0m\n",
-			"minishell: parse error, quotes are never closed");
+		n1 = *lst;
+		lst++;
+		free(n1);
 	}
-	else if (error_code == 2)
-	{
-		printf("\033[91m%s '%s'\033[0m\n",
-			"minishell: parse error, near", content);
-	}
-	else if (error_code == 3)
-	{
-		printf("\033[91m%s '%s'\033[0m\n",
-			"minishell: the command cannot end with",
-			content);
-	}
-	return (1);
+	*lst = NULL;
 }
+
+void	free_envs(t_envs **s)
+{
+	t_envs	*tmp;
+
+	if (s)
+	{
+		while (*s)
+		{
+			tmp = (*s)->next;
+			free(*s);
+			(*s) = tmp;
+		}
+	}
+}
+
+int	free_t_mini(t_mini *mini)
+{
+	int	exit_status;
+
+	exit_status = mini->exit_status;
+	free_envs(&mini->envs);
+	return (exit_status);
+}
+
+

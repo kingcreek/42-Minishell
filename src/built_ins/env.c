@@ -1,12 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   executor.c                                         :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: imurugar <imurugar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/06 22:04:53 by imurugar          #+#    #+#             */
-/*   Updated: 2023/04/06 22:04:54 by imurugar         ###   ########.fr       */
+/*   Created: 2023/04/11 02:10:03 by imurugar          #+#    #+#             */
+/*   Updated: 2023/04/11 02:12:02 by imurugar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "minishell.h"
+
+void	print_env_vars(t_mini *mini)
+{
+	t_envs	*curr;
+
+	curr = mini->envs;
+	while (curr)
+	{
+		ft_putstr_fd(curr->key, 1);
+		ft_putchar_fd('=', 1);
+		ft_putendl_fd(curr->val, 1);
+		curr = curr->next;
+	}
+}

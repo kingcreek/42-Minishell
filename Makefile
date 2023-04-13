@@ -18,18 +18,17 @@ INC_DIR	 =		./inc/
 UTILS_DIR   =	utils/
 SIGNAL_DIR  =	signal/
 ENV_DIR 	=	env/
-LEXER_DIR 	=	lexer/
+PARSER_DIR 	=	parser/
 
 # /* ~~~~~~~ FILES ~~~~~~~ */
 INC =   minishell.h
 
 SRCS	=	main.c \
-			executor.c \
-			parser.c \
-			$(LEXER_DIR)lexer.c \
 			$(UTILS_DIR)error.c \
+			$(UTILS_DIR)free.c \
 			$(SIGNAL_DIR)handle_signals.c \
 			$(ENV_DIR)fill_env.c \
+			$(PARSER_DIR)checker.c \
 
 # /* ~~~~~~~ INCLUDING LIBFT ~~~~~~~ */
 LIBFT_DIR = libft
