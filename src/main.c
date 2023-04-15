@@ -6,7 +6,7 @@
 /*   By: imurugar <imurugar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 20:13:47 by imurugar          #+#    #+#             */
-/*   Updated: 2023/04/13 14:36:21 by imurugar         ###   ########.fr       */
+/*   Updated: 2023/04/15 12:06:48 by imurugar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,21 +66,24 @@ char	*take_input(t_mini *mem)
 	return (buf);
 }
 
-t_cmdlst	*parsing(char *command)
+t_cmdlst	*parsing_args(char *command)
 {
 	t_cmdlst	*command_list;
-	/*t_list		*args;
+	t_list		*args;
 
 	args = NULL;
-	*/
 	if (check_quotes(command))
 		return (NULL);
-	printf("llega");
-	/*
 	if (!split_args(&args, command))
 		return (NULL);
-	*/
-	if (check_specials(args))
+	
+	//testing
+	while (args)
+	{
+		printf("cmd: %s\n", (char *)args->content);
+		args = args->next;
+	}
+	if (check_specials(args)) // prevent invalid command like: echo hola > &&
 	{
 		lst_clear(&args);
 		return (NULL);
@@ -108,10 +111,9 @@ int	main(int argc, char **argv, char **envs)
 	while (1)
 	{
 		input = take_input(&mini);
-		
 		if (!input)
 			continue ;
-		command_list = parsing(input);
+		command_list = parsing_args(input);
 		free(input);
 		if (!command_list)
 			continue ;

@@ -6,7 +6,7 @@
 /*   By: imurugar <imurugar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 02:02:51 by imurugar          #+#    #+#             */
-/*   Updated: 2023/04/11 16:46:34 by imurugar         ###   ########.fr       */
+/*   Updated: 2023/04/15 11:50:17 by imurugar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,32 @@ int	free_t_mini(t_mini *mini)
 	return (exit_status);
 }
 
+int	strarr_free(char **arr)
+{
+	int	cur;
+
+	cur = -1;
+	if (arr)
+	{
+		while (arr[++cur])
+			free(arr[cur]);
+		free(arr);
+	}
+	return (0);
+}
+
+int	lst_clear(t_list **lst)
+{
+	t_list	*nxt;
+
+	while (*lst)
+	{
+		nxt = (*lst)->next;
+		free((*lst)->content);
+		free(*lst);
+		*lst = nxt;
+	}
+	*lst = NULL;
+	return (0);
+}
 

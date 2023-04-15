@@ -6,7 +6,7 @@
 /*   By: imurugar <imurugar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 14:14:25 by imurugar          #+#    #+#             */
-/*   Updated: 2023/04/13 14:35:08 by imurugar         ###   ########.fr       */
+/*   Updated: 2023/04/15 10:58:40 by imurugar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int	check_quotes(char *cmd)
 	return (i);
 }
 
+/*
 int	check_specials(t_list *args)
 {
 	t_list	*it_args;
@@ -67,3 +68,4 @@ int	check_specials(t_list *args)
 	}
 	return (0);
 }
+*/

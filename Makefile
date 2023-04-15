@@ -24,11 +24,15 @@ PARSER_DIR 	=	parser/
 INC =   minishell.h
 
 SRCS	=	main.c \
+			$(UTILS_DIR)utils.c \
 			$(UTILS_DIR)error.c \
 			$(UTILS_DIR)free.c \
+			$(UTILS_DIR)helper.c \
 			$(SIGNAL_DIR)handle_signals.c \
 			$(ENV_DIR)fill_env.c \
 			$(PARSER_DIR)checker.c \
+			$(PARSER_DIR)parser.c \
+			$(PARSER_DIR)lists.c \
 
 # /* ~~~~~~~ INCLUDING LIBFT ~~~~~~~ */
 LIBFT_DIR = libft

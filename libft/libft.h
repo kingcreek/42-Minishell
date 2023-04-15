@@ -68,5 +68,6 @@ void		ft_lstclear(t_list **lst, void (*del)(void *));
 void		ft_striteri(char *s, void (*f)(unsigned int, char*));
 void		ft_lstiter(t_list *lst, void (*f)(void *));
 int			ft_strcmp(char *s1, char *s2);
+char		*ft_strldup(const char *s1, int size);
 
 #endif
