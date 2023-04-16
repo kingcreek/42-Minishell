@@ -33,6 +33,7 @@ SRCS	=	main.c \
 			$(PARSER_DIR)checker.c \
 			$(PARSER_DIR)parser.c \
 			$(PARSER_DIR)lists.c \
+			$(PARSER_DIR)cmd.c \
 
 # /* ~~~~~~~ INCLUDING LIBFT ~~~~~~~ */
 LIBFT_DIR = libft

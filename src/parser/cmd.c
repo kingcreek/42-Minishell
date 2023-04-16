@@ -1,30 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: imurugar <imurugar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/06 21:22:07 by imurugar          #+#    #+#             */
-/*   Updated: 2023/04/16 16:03:54 by imurugar         ###   ########.fr       */
+/*   Created: 2023/04/16 16:20:18 by imurugar          #+#    #+#             */
+/*   Updated: 2023/04/16 16:29:55 by imurugar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	print_error(int error_code, char *content)
+int	fill_cmd_list(t_cmdlst **command_list, t_list *args)
 {
-	if (error_code == 1)
+	t_cmdlst	*new;
+
+	*command_list = NULL;
+	while (args && !get_arg_type(args->content))
 	{
-		printf(COLOR_RED "minishell: parse error, quotes are never closed" COLOR_RESET "\n");
-	}
-	else if (error_code == 2)
-	{
-		printf(COLOR_RED "minishell: parse error, near '%s'" COLOR_RESET "\n", content);
-	}
-	else if (error_code == 3)
-	{
-		printf(COLOR_RED "minishell: the command cannot end with '%s'" COLOR_RESET "\n", content);
+		printf("%s\n", (char *)args->content);
+		if (args)
+			args = args->next;
 	}
 	return (1);
 }

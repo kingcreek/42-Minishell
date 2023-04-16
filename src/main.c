@@ -6,7 +6,7 @@
 /*   By: imurugar <imurugar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 20:13:47 by imurugar          #+#    #+#             */
-/*   Updated: 2023/04/15 12:06:48 by imurugar         ###   ########.fr       */
+/*   Updated: 2023/04/16 16:30:04 by imurugar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,17 @@ char	*get_prompt(t_mini *mem)
 	pwd = get_env_val(mem, "PWD");
 	if (pwd)
 	{
-		temp = ft_strjoin("\n\001\033[36m\002", pwd);
+		temp = ft_strjoin(COLOR_CYAN, pwd);
 		free(pwd);
-		start = ft_strjoin(temp, "\001\033[0m\002\n");
+		start = ft_strjoin(temp, COLOR_RESET "\n");
 		free(temp);
 	}
 	else
-		start = ft_strdup("\001\033[36m\002minishell\001\033[0m\002");
+		start = ft_strdup(COLOR_CYAN "minishell" COLOR_RESET);
 	if (mem->exit_status == 0)
-		prompt = ft_strjoin(start, "\001\033[32m\002>\001\033[0m\002");
+		prompt = ft_strjoin(start, COLOR_GREEN ">" COLOR_RESET);
 	else
-		prompt = ft_strjoin(start, "\001\033[31m\002>\001\033[0m\002");
+		prompt = ft_strjoin(start, COLOR_RED ">" COLOR_RESET);
 	free(start);
 	return (prompt);
 }
@@ -76,25 +76,17 @@ t_cmdlst	*parsing_args(char *command)
 		return (NULL);
 	if (!split_args(&args, command))
 		return (NULL);
-	
-	//testing
-	while (args)
-	{
-		printf("cmd: %s\n", (char *)args->content);
-		args = args->next;
-	}
-	if (check_specials(args)) // prevent invalid command like: echo hola > &&
+	if (check_specials(args))
 	{
 		lst_clear(&args);
 		return (NULL);
 	}
-	/*
-	if (!create_command_lst(&command_list, args))
+	if (!fill_cmd_list(&command_list, args))
 	{
 		lst_clear(&args);
 		return (NULL);
 	}
-	lst_clear(&args);*/
+	lst_clear(&args);
 	return (command_list);
 }
 

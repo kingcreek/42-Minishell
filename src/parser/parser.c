@@ -6,7 +6,7 @@
 /*   By: imurugar <imurugar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 11:05:38 by imurugar          #+#    #+#             */
-/*   Updated: 2023/04/15 11:38:35 by imurugar         ###   ########.fr       */
+/*   Updated: 2023/04/15 13:12:55 by imurugar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	get_end_index(char *str, int end)
 		return (0);
 	end_idx = get_end_queotes(str, end);
 	if (end_idx == 0)
-		return (strarr_free(split)); // free_2d_str
+		return (strarr_free(split));
 	if (end_idx != -2)
 		return (end_idx + strarr_free(split));
 	cur = -1;
