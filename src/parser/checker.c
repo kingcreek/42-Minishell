@@ -6,7 +6,7 @@
 /*   By: imurugar <imurugar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 14:14:25 by imurugar          #+#    #+#             */
-/*   Updated: 2023/04/16 16:28:51 by imurugar         ###   ########.fr       */
+/*   Updated: 2023/04/16 17:47:08 by imurugar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,31 +28,29 @@
  */
 int	check_quotes(char *cmd)
 {
-	int	len;
-	int	single_quotes;
 	int	double_quotes;
-	int	i;
+	int	single_quotes;
 
-	len = strlen(cmd);
-	single_quotes = 0;
 	double_quotes = 0;
-	i = 0;
-	while (i < len)
+	single_quotes = 0;
+	while (*cmd != '\0')
 	{
-		if (cmd[i] == '\'')
+		if (*cmd == '\"' && !single_quotes)
 		{
-			single_quotes++;
+			double_quotes = !double_quotes;
 		}
-		else if (cmd[i] == '\"')
+		else if (*cmd == '\'' && !double_quotes)
 		{
-			double_quotes++;
+			single_quotes = !single_quotes;
 		}
-		i++;
+		cmd++;
 	}
-	i = ((single_quotes % 2 == 0) && (double_quotes % 2 == 0)) == 0;
-	if (i != 0)
+	if (double_quotes || single_quotes)
+	{
 		print_error(1, NULL);
-	return (i);
+		return (0);
+	}
+	return (1);
 }
 /*
 int	strcmp_len(char *s1, char *s2)

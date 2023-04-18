@@ -1,30 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   execute_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: imurugar <imurugar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/06 21:22:07 by imurugar          #+#    #+#             */
-/*   Updated: 2023/04/16 16:03:54 by imurugar         ###   ########.fr       */
+/*   Created: 2023/04/18 14:18:59 by imurugar          #+#    #+#             */
+/*   Updated: 2023/04/18 16:08:49 by imurugar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	print_error(int error_code, char *content)
+int	is_exit(t_cmdlst *lst)
 {
-	if (error_code == 1)
-	{
-		printf(COLOR_RED "minishell: parse error, quotes are never closed" COLOR_RESET "\n");
-	}
-	else if (error_code == 2)
-	{
-		printf(COLOR_RED "minishell: parse error, near '%s'" COLOR_RESET "\n", content);
-	}
-	else if (error_code == 3)
-	{
-		printf(COLOR_RED "minishell: the command cannot end with '%s'" COLOR_RESET "\n", content);
-	}
-	return (1);
+	if ((ft_strcmp(lst->command, "exit") == 0) && ((lst->todo_next == 0
+				&& cmdlist_len(lst) == 1) || lst->todo_next == 2
+			|| lst->todo_next == 3))
+		return (1);
+	return (0);
 }

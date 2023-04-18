@@ -15,25 +15,35 @@ SRCS_DIR =		./src/
 OBJ_DIR	 =		./obj/
 INC_DIR	 =		./inc/
 
-UTILS_DIR   =	utils/
-SIGNAL_DIR  =	signal/
-ENV_DIR 	=	env/
-PARSER_DIR 	=	parser/
+UTILS_DIR  		=	utils/
+SIGNAL_DIR	  	=	signal/
+ENV_DIR 		=	env/
+PARSER_DIR 		=	parser/
+EXECUTE_DIR 	=	execute/
+BUILT_DIR 		=	built_in/
 
 # /* ~~~~~~~ FILES ~~~~~~~ */
 INC =   minishell.h
 
 SRCS	=	main.c \
 			$(UTILS_DIR)utils.c \
-			$(UTILS_DIR)error.c \
+			$(UTILS_DIR)messages.c \
 			$(UTILS_DIR)free.c \
 			$(UTILS_DIR)helper.c \
+			$(BUILT_DIR)exit.c \
+			$(BUILT_DIR)echo.c \
+			$(BUILT_DIR)env.c \
+			$(BUILT_DIR)pwd.c \
 			$(SIGNAL_DIR)handle_signals.c \
 			$(ENV_DIR)fill_env.c \
+			$(ENV_DIR)expansor.c \
 			$(PARSER_DIR)checker.c \
 			$(PARSER_DIR)parser.c \
 			$(PARSER_DIR)lists.c \
 			$(PARSER_DIR)cmd.c \
+			$(PARSER_DIR)outfiles.c \
+			$(EXECUTE_DIR)execute.c \
+			$(EXECUTE_DIR)execute_utils.c \
 
 # /* ~~~~~~~ INCLUDING LIBFT ~~~~~~~ */
 LIBFT_DIR = libft

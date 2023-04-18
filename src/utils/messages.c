@@ -1,38 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   handle_signals.c                                   :+:      :+:    :+:   */
+/*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: imurugar <imurugar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/07 10:07:38 by imurugar          #+#    #+#             */
-/*   Updated: 2023/04/18 19:40:25 by imurugar         ###   ########.fr       */
+/*   Created: 2023/04/06 21:22:07 by imurugar          #+#    #+#             */
+/*   Updated: 2023/04/16 17:29:33 by imurugar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	handle_signal(int signal)
+int	print_error(int error_code, char *content)
 {
-	if (g_pid)
-		return ;
-	if (signal == SIGINT)
+	if (error_code == 1)
 	{
-		ft_putstr_fd("\n", 1);
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
+		printf(COLOR_RED "minishell: " QUOTES COLOR_RESET "\n");
 	}
-	else if (signal == SIGQUIT)
+	else if (error_code == 2)
 	{
-		rl_on_new_line();
-		rl_redisplay();
-		ft_putstr_fd("  \b\b", 1);
+		printf(COLOR_RED "minishell: " NEAR "'%s'" COLOR_RESET "\n", content);
 	}
-}
-
-void	start_handles(void)
-{
-	signal(SIGINT, handle_signal);
-	signal(SIGQUIT, handle_signal);
+	else if (error_code == 3)
+	{
+		printf(COLOR_RED "minishell: " ENDS "'%s'" COLOR_RESET "\n", content);
+	}
+	return (1);
 }

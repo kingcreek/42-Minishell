@@ -1,38 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   handle_signals.c                                   :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: imurugar <imurugar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/07 10:07:38 by imurugar          #+#    #+#             */
-/*   Updated: 2023/04/18 19:40:25 by imurugar         ###   ########.fr       */
+/*   Created: 2023/04/11 02:10:03 by imurugar          #+#    #+#             */
+/*   Updated: 2023/04/18 16:10:50 by imurugar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	handle_signal(int signal)
+void	print_env_vars(t_mini *mini)
 {
-	if (g_pid)
-		return ;
-	if (signal == SIGINT)
-	{
-		ft_putstr_fd("\n", 1);
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-	}
-	else if (signal == SIGQUIT)
-	{
-		rl_on_new_line();
-		rl_redisplay();
-		ft_putstr_fd("  \b\b", 1);
-	}
-}
+	t_envs	*curr;
 
-void	start_handles(void)
-{
-	signal(SIGINT, handle_signal);
-	signal(SIGQUIT, handle_signal);
+	curr = mini->envs;
+	while (curr)
+	{
+		ft_putstr_fd(curr->key, 1);
+		ft_putchar_fd('=', 1);
+		ft_putendl_fd(curr->val, 1);
+		curr = curr->next;
+	}
 }

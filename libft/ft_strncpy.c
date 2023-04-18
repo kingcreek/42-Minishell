@@ -1,27 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   ft_strncpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: imurugar <imurugar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/11 02:10:03 by imurugar          #+#    #+#             */
-/*   Updated: 2023/04/11 02:12:02 by imurugar         ###   ########.fr       */
+/*   Created: 2023/04/18 20:16:49 by imurugar          #+#    #+#             */
+/*   Updated: 2023/04/18 20:17:00 by imurugar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-
-void	print_env_vars(t_mini *mini)
+char	*ft_strncpy(char *dest, char *src, unsigned int n)
 {
-	t_envs	*curr;
+	unsigned int	i;
 
-	curr = mini->envs;
-	while (curr)
+	i = 0;
+	while (src[i] != '\0' && i < n)
 	{
-		ft_putstr_fd(curr->key, 1);
-		ft_putchar_fd('=', 1);
-		ft_putendl_fd(curr->val, 1);
-		curr = curr->next;
+		dest[i] = src[i];
+		++i;
 	}
+	if (i < n && src[i] == '\0')
+	{
+		while (dest[i] != '\0')
+		{
+			dest[i] = '\0';
+			++i;
+		}
+	}
+	return (dest);
 }

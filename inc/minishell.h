@@ -6,7 +6,7 @@
 /*   By: imurugar <imurugar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 20:14:01 by imurugar          #+#    #+#             */
-/*   Updated: 2023/04/16 16:30:11 by imurugar         ###   ########.fr       */
+/*   Updated: 2023/04/18 22:47:09 by imurugar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,16 @@
 # include <unistd.h>
 # include <signal.h>
 # include <sys/wait.h>
+# include <errno.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 
-/* STDR output */
+/* ERROR MSG */
+# define QUOTES	"parse error, quotes are never closed"
+# define NEAR	"parse error, near "
+# define ENDS	"the command cannot end with "
 
+/* STDR output */
 # define STDIN 0
 # define STDOUT 1
 # define STDERR 2
@@ -45,19 +50,18 @@
 # define COLOR_CYAN		"\033[36m"
 # define COLOR_RESET	"\033[0m"
 
+/* OUTPUT FILES */
+# define WRITE 0
+# define APPEND 1
+
 # define UNKNOWN_COMMAND 127
 
-/* We split the argv command and save each cmd */
-typedef struct s_command
-{
-	char	*cmd;
-	void	*next;
-	void	*prev;
-}			t_command;
+extern pid_t		g_pid;
 
 /* Get all ENV and store here like a HasMap<key, Value> */
 typedef struct s_envs
 {
+	char	*allenv;
 	char	*key;
 	char	*val;
 	void	*next;
@@ -68,7 +72,7 @@ typedef struct s_o_file
 {
 	char			*filename;
 	int				action;
-	struct s_outlst	*next;
+	struct s_o_file	*next;
 }	t_o_file;
 
 /* All comands stored here to do pipex! */
@@ -87,9 +91,10 @@ typedef struct s_cmdlst
 typedef struct s_mini
 {
 	t_envs		*envs;
-	t_command	*cmds;
-	char		**path;
-	int			exit_status;
+	char		*exec_path;
+	char		*tmpfile;
+	int			cmd_exit_status;
+	int			last_exit_status;
 }			t_mini;
 
 /* SIGNAL */
@@ -97,34 +102,64 @@ void	start_handles(void);
 int		load_env_vars(t_mini *mini, char **envp);
 
 /* ENV */
-char	*get_env_val(t_mini *mini, char *key);
+
+//Fill env
+char	*get_env_val(t_mini *mini, char *key, int last_exit);
+
+//Expansor
+void	expand_env(char **cmds, t_mini *mini);
 
 /* PARSER */
+
 //Checker
 int		check_quotes(char *command);
 int		check_specials(t_list *list);
 int		get_arg_type(char *str);
+int		is_sep(char *str);
+
 //Parser
 int		split_args(t_list **args, char *cmd);
 int		get_end_index(char *str, int end);
 int		get_end_arg(char *str, int quote_idx);
 int		get_end_queotes(char *str, int end);
+
 //List
 int		lst_append(t_list **lst, char *str);
+int		strarr_append(char ***array, char *str);
+int		cmdlist_len(t_cmdlst *lst);
+
 //Cmd
 int		fill_cmd_list(t_cmdlst **command_list, t_list *args);
 
+//Outfiles
+int		append_out_args(t_list **args, char *op, t_o_file **out);
+
 /* HELPERS */
+
 //Free
 int		strarr_free(char **arr);
-int		free_t_mini(t_mini *mini);
+int		free_t_mini(t_mini *mini, int exit);
 int		lst_clear(t_list **lst);
+int		cmd_clear(t_cmdlst **lst);
+int		free_array_n(char **array, int n);
+
 //Error
 int		print_error(int error_code, char *content);
+
 //Helper
 int		is_simbol(char c);
+
 //Utils
 int		index_new_line(char *str);
 int		index_of(char *str, char *search, int len);
+void	ft_exit(t_mini *mem, t_cmdlst *lst);
+
+/* EXECUTE */
+
+//Execute
+void	execute(t_cmdlst *lst, t_mini *mini);
+
+//Execute Utils
+int		is_exit(t_cmdlst *lst);
 
 #endif

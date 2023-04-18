@@ -69,5 +69,8 @@ void		ft_striteri(char *s, void (*f)(unsigned int, char*));
 void		ft_lstiter(t_list *lst, void (*f)(void *));
 int			ft_strcmp(char *s1, char *s2);
 char		*ft_strldup(const char *s1, int size);
+int			ft_contains_only(char *str, char c);
+char		*ft_strncpy(char *dest, char *src, unsigned int n);
+char		*ft_strcat(char *dest, char *src);
 
 #endif

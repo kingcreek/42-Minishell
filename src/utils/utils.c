@@ -6,7 +6,7 @@
 /*   By: imurugar <imurugar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 11:39:10 by imurugar          #+#    #+#             */
-/*   Updated: 2023/04/15 11:59:08 by imurugar         ###   ########.fr       */
+/*   Updated: 2023/04/18 17:40:30 by imurugar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,3 +43,15 @@ int	index_new_line(char *str)
 	return (idx);
 }
 
+int	outlst_len(t_o_file *lst)
+{
+	int	i;
+
+	i = 0;
+	while (lst)
+	{
+		i++;
+		lst = lst->next;
+	}
+	return (i);
+}

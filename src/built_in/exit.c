@@ -1,38 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   handle_signals.c                                   :+:      :+:    :+:   */
+/*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: imurugar <imurugar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/07 10:07:38 by imurugar          #+#    #+#             */
-/*   Updated: 2023/04/18 19:40:25 by imurugar         ###   ########.fr       */
+/*   Created: 2023/04/18 14:21:44 by imurugar          #+#    #+#             */
+/*   Updated: 2023/04/18 21:57:37 by imurugar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	handle_signal(int signal)
+void	ft_exit(t_mini *mem, t_cmdlst *lst)
 {
-	if (g_pid)
-		return ;
-	if (signal == SIGINT)
-	{
-		ft_putstr_fd("\n", 1);
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-	}
-	else if (signal == SIGQUIT)
-	{
-		rl_on_new_line();
-		rl_redisplay();
-		ft_putstr_fd("  \b\b", 1);
-	}
-}
+	int		exit_status;
 
-void	start_handles(void)
-{
-	signal(SIGINT, handle_signal);
-	signal(SIGQUIT, handle_signal);
+	exit_status = 0;
+	cmd_clear(&lst);
+	exit(free_t_mini(mem, exit_status));
 }
