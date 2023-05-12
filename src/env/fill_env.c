@@ -6,7 +6,7 @@
 /*   By: imurugar <imurugar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 21:23:34 by imurugar          #+#    #+#             */
-/*   Updated: 2023/04/18 22:02:05 by imurugar         ###   ########.fr       */
+/*   Updated: 2023/05/12 16:33:09 by imurugar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ int	add_env_var(t_mini *mini, char *key, char *val, char *all)
 			curr = curr->next;
 		curr->next = new;
 	}
-	//free(key);
 	return (0);
 }
 
@@ -89,11 +88,14 @@ int	load_env_vars(t_mini *mini, char **envp)
 			key = envp[i];
 		else
 			key = ft_substr(envp[i], 0, key - envp[i]);
-		val = ft_strchr(envp[i], '=') + 1;
-		if (!val)
+		val = ft_strchr(envp[i], '=');
+		if (val)
+			val++;
+		else
 			val = "";
-		if (add_env_var(mini, key, val, envp[i]) == -1)
+		if (add_env_var(mini, ft_strdup(key), ft_strdup(val), ft_strdup(envp[i])) == -1)
 			return (-1);
+		free(key);
 		i++;
 	}
 	return (0);
@@ -175,15 +177,64 @@ int	set_env_var(t_mini *mini, char *key, char *new_val)
 	{
 		if (ft_strcmp(env_var->key, key) == 0)
 		{
+			//printf("key: %s\n", env_var->key);
+			//printf("allenv: %s\n", env_var->allenv);
+			//printf("val: %s\n", env_var->val);
 			free(env_var->allenv);
-			env_var->allenv = full_env;
 			free(env_var->val);
-			env_var->val = ft_strdup(new_val);
+			env_var->allenv = full_env;
+			env_var->val = new_val;
+			//free(new_val);
 			if (!env_var->val)
 				return (-1);
 			return (0);
 		}
 		env_var = env_var->next;
 	}
-	return (add_env_var(mini, ft_strdup(key), ft_strdup(new_val), ""));
+	return (add_env_var(mini, ft_strdup(key), new_val, full_env));
+}
+
+int	get_env_len(t_mini *mini)
+{
+	int		count;
+	t_envs	*tmp;
+
+	count = 0;
+	tmp = mini->envs;
+	while (tmp != NULL)
+	{
+		count++;
+		tmp = tmp->next;
+	}
+	return (count);
+}
+
+char	**get_all_env(t_mini *mini)
+{
+	int		count;
+	t_envs	*tmp;
+	char	**result;
+	int		i;
+
+	count = get_env_len(mini);
+	result = malloc(sizeof(char *) * (count + 1));
+	if (result == NULL)
+		return (NULL);
+	i = 0;
+	tmp = mini->envs;
+	while (tmp != NULL)
+	{
+		result[i] = strdup(tmp->allenv);
+		if (result[i] == NULL)
+		{
+			while (i > 0)
+				free(result[--i]);
+			free(result);
+			return (NULL);
+		}
+		tmp = tmp->next;
+		i++;
+	}
+	result[count] = NULL;
+	return (result);
 }

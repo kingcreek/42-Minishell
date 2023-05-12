@@ -6,7 +6,7 @@
 /*   By: imurugar <imurugar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 20:13:47 by imurugar          #+#    #+#             */
-/*   Updated: 2023/04/18 22:03:01 by imurugar         ###   ########.fr       */
+/*   Updated: 2023/04/21 17:25:20 by imurugar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,9 @@ void	init_data(t_mini *mini)
 	mini->cmd_exit_status = 0;
 	mini->last_exit_status = 0;
 	mini->tmpfile = "tmpfile";
+	mini->exec_loop = (t_exec_loop *)malloc(sizeof(t_exec_loop));
+	mini->exec_loop->redirect_file_path = NULL;
+	mini->exec_loop->right_path = NULL;
 }
 
 char	*get_prompt(t_mini *mem)
@@ -91,12 +94,16 @@ int	main(int argc, char **argv, char **envs)
 	t_mini		mini;
 	t_cmdlst	*command_list;
 	char		*input;
+	char		*env;
 
 	(void)argc, (void)argv;
 	g_pid = 0;
 	init_data(&mini);
 	start_handles();
 	load_env_vars(&mini, envs);
+	env = get_env_val(&mini, "PATH", 0);
+	mini.path_tab = ft_split(env, '\0');
+	free(env);
 	while (1)
 	{
 		input = take_input(&mini);

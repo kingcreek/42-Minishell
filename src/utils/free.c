@@ -6,7 +6,7 @@
 /*   By: imurugar <imurugar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 02:02:51 by imurugar          #+#    #+#             */
-/*   Updated: 2023/04/18 22:46:16 by imurugar         ###   ########.fr       */
+/*   Updated: 2023/04/21 17:22:27 by imurugar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ int	free_t_mini(t_mini *mini, int exit)
 	exit_status = mini->last_exit_status;
 	if (mini->envs)
 		free_envs(&mini->envs);
+	if (mini->path_tab)
+		strarr_free(mini->path_tab);
 	return (exit);
 }
 
@@ -136,4 +138,12 @@ int	free_array_n(char **array, int n)
 		free(array[n]);
 	free(array);
 	return (0);
+}
+
+void	free_paths(t_mini *mini)
+{
+	if (mini->exec_path)
+		free(mini->exec_path);
+	if (mini->path_env)
+		free(mini->path_env);
 }

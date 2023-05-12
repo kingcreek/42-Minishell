@@ -72,5 +72,7 @@ char		*ft_strldup(const char *s1, int size);
 int			ft_contains_only(char *str, char c);
 char		*ft_strncpy(char *dest, char *src, unsigned int n);
 char		*ft_strcat(char *dest, char *src);
+char		*ft_strcdup(const char *s1, int c);
+char		*ft_strcdup_end(const char *s1, int c);
 
 #endif

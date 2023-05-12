@@ -6,9 +6,11 @@
 /*   By: imurugar <imurugar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 23:01:33 by imurugar          #+#    #+#             */
-/*   Updated: 2023/04/09 23:02:01 by imurugar         ###   ########.fr       */
+/*   Updated: 2023/05/12 14:10:48 by imurugar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "libft.h"
 
 int	ft_strcmp(char *s1, char *s2)
 {

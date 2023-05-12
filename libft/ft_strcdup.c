@@ -1,27 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   ft_strcdup.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: imurugar <imurugar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/11 02:10:03 by imurugar          #+#    #+#             */
-/*   Updated: 2023/05/11 14:11:25 by imurugar         ###   ########.fr       */
+/*   Created: 2023/05/12 14:10:15 by imurugar          #+#    #+#             */
+/*   Updated: 2023/05/12 14:10:16 by imurugar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-void	ft_env(t_mini *mini)
+char	*ft_strcdup(const char *s1, int c)
 {
-	t_envs	*curr;
+	char	*dst;
+	size_t	len;
 
-	curr = mini->envs;
-	while (curr)
-	{
-		ft_putstr_fd(curr->key, 1);
-		ft_putchar_fd('=', 1);
-		ft_putendl_fd(curr->val, 1);
-		curr = curr->next;
-	}
+	len = 0;
+	while (s1[len] && s1[len] != c)
+		len++;
+	dst = (char *)malloc(len + 1);
+	if (!dst)
+		return (NULL);
+	dst[len] = '\0';
+	while (len-- > 0)
+		dst[len] = s1[len];
+	return (dst);
 }

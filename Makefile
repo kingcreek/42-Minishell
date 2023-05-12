@@ -30,10 +30,13 @@ SRCS	=	main.c \
 			$(UTILS_DIR)messages.c \
 			$(UTILS_DIR)free.c \
 			$(UTILS_DIR)helper.c \
-			$(BUILT_DIR)exit.c \
+			$(BUILT_DIR)cd.c \
 			$(BUILT_DIR)echo.c \
 			$(BUILT_DIR)env.c \
+			$(BUILT_DIR)exit.c \
+			$(BUILT_DIR)export.c \
 			$(BUILT_DIR)pwd.c \
+			$(BUILT_DIR)unset.c \
 			$(SIGNAL_DIR)handle_signals.c \
 			$(ENV_DIR)fill_env.c \
 			$(ENV_DIR)expansor.c \

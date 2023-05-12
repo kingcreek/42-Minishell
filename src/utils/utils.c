@@ -6,7 +6,7 @@
 /*   By: imurugar <imurugar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 11:39:10 by imurugar          #+#    #+#             */
-/*   Updated: 2023/04/18 17:40:30 by imurugar         ###   ########.fr       */
+/*   Updated: 2023/05/11 14:00:10 by imurugar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,3 +55,15 @@ int	outlst_len(t_o_file *lst)
 	}
 	return (i);
 }
+
+int	contains_only(char *str, char c)
+{
+	int	cur;
+
+	cur = -1;
+	while (str[++cur])
+		if (str[cur] != c)
+			return (0);
+	return (1);
+}
+
