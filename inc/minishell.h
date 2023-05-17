@@ -6,7 +6,7 @@
 /*   By: imurugar <imurugar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 03:23:48 by imurugar          #+#    #+#             */
-/*   Updated: 2023/05/17 04:28:44 by imurugar         ###   ########.fr       */
+/*   Updated: 2023/05/17 06:12:46 by imurugar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,6 +197,7 @@ t_bool		free_return(char *str_free);
 t_bool		generic_error(int exit_status, char *locale, char *message);
 void		pipe_syntax_error(void);
 int			error_syntax(char *str);
+void		quotes_error(void);
 
 extern t_var	**g_env;
 

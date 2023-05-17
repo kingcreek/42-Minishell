@@ -6,7 +6,7 @@
 /*   By: imurugar <imurugar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 16:53:27 by imurugar          #+#    #+#             */
-/*   Updated: 2023/05/17 04:20:05 by imurugar         ###   ########.fr       */
+/*   Updated: 2023/05/17 06:13:43 by imurugar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,10 @@ t_bool	generic_error(int exit_status, char *locale, char *message)
 	ft_putendl_fd(message, STDERR_FILENO);
 	set_exit_status(exit_status);
 	return (FALSE);
+}
+
+void	quotes_error(void)
+{
+	ft_putstr_fd(MINISHELL_ERROR, 2);
+	ft_putstr_fd("error while looking for matching quote\n", STDERR_FILENO);
 }

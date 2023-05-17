@@ -6,15 +6,27 @@
 /*   By: imurugar <imurugar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 16:53:49 by imurugar          #+#    #+#             */
-/*   Updated: 2023/05/17 04:14:34 by imurugar         ###   ########.fr       */
+/*   Updated: 2023/05/17 06:13:32 by imurugar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static t_bool	has_unclosed_quotes(char *str);
-static char		*get_unquoted_pipe(char *str);
-static t_bool	has_pipe_syntax_error(char *usr_in);
+static char	*get_unquoted_pipe(char *str)
+{
+	size_t	inx;
+
+	inx = 0;
+	while (str && str[inx])
+	{
+		if (str[inx] == '\"' || str[inx] == '\'')
+			quit_quote(str, &inx);
+		if (str[inx] == '|')
+			return (str + inx);
+		inx++;
+	}
+	return (NULL);
+}
 
 static t_bool	has_unclosed_quotes(char *str)
 {
@@ -34,7 +46,10 @@ static t_bool	has_unclosed_quotes(char *str)
 		i++;
 	}
 	if (simple_quote_count % 2 == 1 || double_quote_count % 2 == 1)
+	{
+		quotes_error();
 		return (TRUE);
+	}
 	return (FALSE);
 }
 
@@ -67,22 +82,6 @@ static t_bool	has_pipe_syntax_error(char *usr_in)
 	return (FALSE);
 }
 
-static char	*get_unquoted_pipe(char *str)
-{
-	size_t	inx;
-
-	inx = 0;
-	while (str && str[inx])
-	{
-		if (str[inx] == '\"' || str[inx] == '\'')
-			quit_quote(str, &inx);
-		if (str[inx] == '|')
-			return (str + inx);
-		inx++;
-	}
-	return (NULL);
-}
-
 t_pipe	*pipe_parse(char *usr_in, t_shell *st_shell)
 {
 	t_pipe	*lst;
@@ -103,6 +102,7 @@ t_pipe	*pipe_parse(char *usr_in, t_shell *st_shell)
 			if (usr_in[inx + 1] != '\0')
 				usr_in += inx + 1;
 			inx = 0;
+			continue ;
 		}
 		inx++;
 	}

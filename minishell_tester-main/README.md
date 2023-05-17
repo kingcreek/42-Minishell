@@ -1,61 +1,50 @@
-<img width="1728" alt="image" src="https://user-images.githubusercontent.com/26127185/175815870-be78bbd5-d1be-4164-954a-982768c6b147.png">
+# minishell_tester
+**minishell_tester** is a tool designed to automate the testing process of a `minishell` project. To use the tool, simply clone the repository into your project folder using the following command:
 
-# Installation 
-Clone the repo **inside** your minishell folder 
-```sh
-cd minishell
-git clone https://github.com/LucasKuhn/minishell_tester.git
-cd minishell_tester
+```bash
+git clone https://github.com/M0dzie/minishell_tester
 ```
 
-# How to run 
-Run the `tester` file to run all the tests for the mandatory part of the project
-```sh
-./tester
-```
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/26127185/175816613-324711eb-5511-4dea-84b6-3117d6b79d28.gif" width="720"/>
-</p>
+## Launching the Tester
+To launch the tester, navigate to the `minishell_tester` directory in your terminal and run the `tester.sh` script using the following command:
 
-# Separate tests
-You can also call `./tester` + `test_file` to run only a specific part of the test:
-```sh
-./tester builtins 
+```bash
+bash tester.sh
 ```
-```sh
-./tester pipes 
-```
-```sh
-./tester redirects 
-```
-```sh
-./tester extras 
+The tester.sh script will automatically compile your minishell project and run a series of tests to verify its functionality. The test results will be displayed in your terminal, indicating whether the project has passed or failed the tests.
+
+## Specific Tests
+To launch specific tests, you can add one of these following arguments : 
+- `basic`
+- `echo`
+- `env`
+- `export`
+- `unset`
+- `binary`
+- `pwd`
+- `exit`
+- `pipes`
+
+For example :
+```bash
+bash tester.sh pwd
 ```
 
-# Manual tests 
-The tester does **not** test everything. We added some suggestions of manual test in the [manual_tests](manual_tests) folder
-- [mandatory](manual_tests/mandatory)
-- [heredoc](manual_tests/heredoc)
-- [signals](manual_tests/signals)
-- [not_mandatory](manual_tests/not_mandatory)
+## Disclaimer
 
-# Bonus 
-We also have tests for the `wildcards` part of the bonus: 
-```
-./tester wildcards 
-```
-* Make sure your executable is called `minishell_bonus`
+`echo -n` tests are still in WIP  
+The tester will only run a series of basics and errors tests, you need to make your own tests for `heredoc`, `cd` and `redirections`
 
-# Extra tests
-We decided to leave out some tests from the mandatory part, things like syntax errors and OS specific code.
-<p align="center">
-  <img width="800" alt="Screen Shot 2022-06-26 at 10 40 18 AM" src="https://user-images.githubusercontent.com/26127185/175816956-d7358f24-6498-4c53-932f-183c9f0bd1ba.png">
-</p>
+## Testing Process
+The testing process involves two steps: 
 
-You can run them like any other separate test:
-```sh
-./tester syntax
-```
-```sh
-./tester os_specific
-```
+1. Checking the _norm_: The tester will first check the conformity of the project code with the specified norms from 42 School.
+
+2. Building the project: If the project has not already been built, the tester will then use the `make` command to build it.
+
+## Test Results
+After running the tests, the following outcomes may occur:
+
+- Successful output: If the output is correct, you will see a `success` message displayed on your terminal for each test.
+
+- Failed output: If the output is incorrect, you can compare the expected output with your output by checking the `Expected output` and `Your output` sections.

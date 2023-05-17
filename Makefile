@@ -78,8 +78,8 @@ OBJ_DIRS	:= $(sort $(dir $(OBJS)))
 #INCLUDES	= $(H_INCLUDES)# $(LIBFT_H_INC)
 
 # /* ~~~~~~~ TESTING FLAGS ~~~~~~~ */
-# SANITIZE =
-SANITIZE = -g3 -fsanitize=address
+ SANITIZE =
+ SANITIZE = -g3 -fsanitize=address
 # SANITIZE = -g3 -fsanitize=thread
 
 # /* ~~~~~~~ COMPILING INFO ~~~~~~~ */
