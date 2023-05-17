@@ -5,214 +5,199 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: imurugar <imurugar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/05 20:14:01 by imurugar          #+#    #+#             */
-/*   Updated: 2023/05/12 15:46:43 by imurugar         ###   ########.fr       */
+/*   Created: 2023/05/17 03:23:48 by imurugar          #+#    #+#             */
+/*   Updated: 2023/05/17 04:28:44 by imurugar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-/* INCLUDES */
 # include "../libft/libft.h"
 # include <stdio.h>
 # include <stdlib.h>
-# include <unistd.h>
-# include <signal.h>
 # include <sys/wait.h>
-# include <sys/stat.h>
-# include <errno.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <fcntl.h>
+# include <dirent.h>
+# include <signal.h>
 
-/* ERROR MSG */
-# define QUOTES	"parse error, quotes are never closed"
-# define NEAR	"parse error, near "
-# define ENDS	"the command cannot end with "
+# define LULUSHELL			 "👾 Minishell 👾 > "
+# define BUILDS_COUNT		 7
+# define BUILTIN_MISUSE_CODE 2
+# define SYNTAX_ERROR		 "syntax error near unexpected token "
+# define EOF_ERROR "warning: here-document delimited by end-of-file (wanted `"
+# define MINISHELL_ERROR	 "Minishell: "
+# define ERROR_FILE_DIR		 "No such file or directory"
+# define ERROR_PERMI		 "Permission denied"
 
-/* STDR output */
-# define STDIN 0
-# define STDOUT 1
-# define STDERR 2
+# define WHITE_SPACE_CHARS " \f\n\r\t\v"
 
-/* Action types */
-# define PIPE 1
-# define AND 2
-# define OR 3
-# define CONTINUE 4
-# define END 0
-
-/* COLORS */
-# define COLOR_RED		"\033[31m"
-# define COLOR_GREEN	"\033[32m"
-# define COLOR_YELLOW	"\033[33m"
-# define COLOR_BLUE		"\033[34m"
-# define COLOR_MAGENTA	"\033[35m"
-# define COLOR_CYAN		"\033[36m"
-# define COLOR_RESET	"\033[0m"
-
-/* OUTPUT FILES */
-# define WRITE 0
-# define APPEND 1
-
-# define UNKNOWN_COMMAND 127
-
-extern pid_t		g_pid;
-
-/* Get all ENV and store here like a HasMap<key, Value> */
-typedef struct s_envs
+typedef struct s_builtin
 {
-	char	*allenv;
-	char	*key;
-	char	*val;
-	void	*next;
-}			t_envs;
+	char	*name;
+	void	(*func)();
+}	t_builtin;
 
-/* For each cmd, store output files with action ">", ">>" */
-typedef struct s_o_file
+typedef enum e_error
 {
-	char			*filename;
-	int				action;
-	struct s_o_file	*next;
-}	t_o_file;
+	SUCCESS,
+	NO_DIR,
+	DENI_PERMI,
+	IS_DIR
+}	t_error;
 
-/* All comands stored here */
-typedef struct s_cmdlst
+typedef enum e_bool
 {
-	char			*command;
-	char			**args;
-	char			**infiles;
-	t_o_file		*outfiles;
-	char			**heredocs;
-	int				todo_next;
-	struct s_cmdlst	*next;
-}	t_cmdlst;
+	FALSE,
+	TRUE
+}	t_bool;
 
-/* Execution args */
-typedef struct s_exec
+typedef struct s_shell
 {
-	int		tmpin;
-	int		tmpout;
-	int		fdin;
-	int		fdout;
-	int		fdpipe[2];
-	char	*redirect_file_path;
-	char	*right_path;
-}	t_exec;
+	char		*cmd;
+	char		**args;
+	int			pipe[2];
+	int			lst_inx;
+	int			infile;
+	int			outfile;
+	int			lst_size;
+	int			exit_status;
+	char		*error_locale;
+	t_error		file_stat;
+}	t_shell;
 
-typedef struct s_exec_loop
+typedef struct s_var
 {
-	int		tmpin;
-	int		tmpout;
-	int		fdin;
-	int		fdout;
-	int		fdpipe[2];
-	char	*redirect_file_path;
-	char	*right_path;
-}	t_exec_loop;
+	char			*name;
+	char			*value;
+	struct s_var	*next;
+}	t_var;
 
-/* Main struct to store all data info */
-typedef struct s_mini
+typedef struct s_pipe
 {
-	t_exec		*exec;
-	t_envs		*envs;
-	char		*exec_path;
-	char		*path_env;
-	char		**path_tab;
-	char		*tmpfile;
-	int			cmd_exit_status;
-	int			last_exit_status;
-	t_exec_loop	*exec_loop;
-}			t_mini;
+	char			*str;
+	struct s_pipe	*next;
+}	t_pipe;
 
-/* SIGNAL */
-void	start_handles(void);
-int		load_env_vars(t_mini *mini, char **envp);
+typedef enum e_tokens
+{
+	INFILE,
+	OUTFILE,
+	APPEND,
+	HEREDOC,
+	NOT_REDIR
+}	t_tokens;
 
-/* ENV */
+void		ft_echo(char *usr_in, int write_fd);
+void		ft_env(int write_fd);
+void		ft_pwd(int write_fd);
+void		ft_cd(char *usr_in);
+void		ft_exit(char *usr_in, t_pipe *pipe_lst, t_builtin *builds,
+				t_bool print);
+void		ft_export(char *usr_in, int write_fd);
+void		ft_unset(char *usr_in);
 
-//Fill env
-char	*get_env_val(t_mini *mini, char *key, int last_exit);
-int		set_env_var(t_mini *mini, char *key, char *new_val);
-char	**get_all_env(t_mini *mini);
+// commands.c
+t_bool		recognizer_cmd(t_pipe *pipe_lst, t_shell *st_shell);
+void		fork_exec(t_shell *st_shell, t_pipe *pipe_lst);
 
-//Expansor
-void	expand_env(char **cmds, t_mini *mini);
+// build_ins.c
+t_bool		is_builds(t_pipe *pipe_lst, t_shell *st_shell);
+t_builtin	*init_builds(void);
+int			hash_search(const char *key, t_builtin *builds);
 
-/* PARSER */
+// parsing_parse.c
+t_pipe		*pipe_parse(char *usr_in, t_shell *s_shell);
+t_bool		is_empty_str(char *usr_in);
 
-//Checker
-int		check_quotes(char *command);
-int		check_specials(t_list *list);
-int		get_arg_type(char *str);
-int		is_sep(char *str);
+// parsing.c
+void		parsing(char *std_in, t_shell *st_shell);
+char		*find_var_assignment(char *str);
 
-//Parser
-int		split_args(t_list **args, char *cmd);
-int		get_end_index(char *str, int end);
-int		get_end_arg(char *str, int quote_idx);
-int		get_end_queotes(char *str, int end);
+// expansion.c
+void		find_var_and_expand(char **usr_in, t_bool is_assignment);
 
-//List
-int		lst_append(t_list **lst, char *str);
-int		strarr_append(char ***array, char *str);
-int		cmdlist_len(t_cmdlst *lst);
+// parsing_utils.c
+void		quit_quote(char *str, size_t *inx);
+t_bool		is_word_start(char *str, size_t index);
+t_bool		is_within_quotes(char *str, size_t index);
+char		*remove_quotes_from_word(char *str, size_t word_end);
 
-//Cmd
-int		fill_cmd_list(t_cmdlst **command_list, t_list *args);
+// var_utils.c
+t_bool		is_valid_varname(char *str);
+t_bool		is_valid_varname_char(char c);
+char		*get_var_name(char *str);
+t_var		*get_var_from_assignment(char *str);
 
-//Outfiles
-int		append_out_args(t_list **args, char *op, t_o_file **out);
+// set_in_outs.c
+void		set_in_out(t_shell *st_shell);
+t_bool		set_redirect(t_pipe *pipe_lst, t_shell *st_shell, size_t inx);
+int			recognize_redirect(t_pipe *tk_lst, t_shell *shell);
+t_error		check_file_access(char **file, t_tokens token, t_shell *st_shell);
 
-/* HELPERS */
+// redirect_utils.c
+void		cut_str(t_pipe *pipe_lst, int start_inx, int end_inx);
+t_tokens	get_token(char *str, size_t *inx);
+t_bool		file_name(char *file, size_t *str_inx, t_tokens tk, t_shell *shell);
 
-//Free
-int		strarr_free(char **arr);
-int		free_t_mini(t_mini *mini, int exit);
-int		lst_clear(t_list **lst);
-int		cmd_clear(t_cmdlst **lst);
-int		free_array_n(char **array, int n);
-void	free_paths(t_mini *mini);
+// heredoc.c
+t_bool		here_doc(char *delimiter, t_shell *shell);
 
-//Error
-int		print_error(int error_code, char *content);
+//pipelst
+t_pipe		*pipe_lst_new(char *str_in);
+void		pipe_lst_add_back(t_pipe **lst, t_pipe *new);
+void		pipe_lst_add_front(t_pipe **lst, t_pipe *new);
+void		pipe_lst_delete_node(t_pipe *node);
+void		pipe_lst_clear(t_pipe **lst);
+int			pipe_lst_size(t_pipe *lst);
 
-//Helper
-int		is_simbol(char c);
+// lst_add.c
+t_var		*var_lst_new(char *name, char *value);
+void		var_lst_add_back(t_var **lst, t_var *new);
+void		var_lst_add_front(t_var **lst, t_var *new);
+void		var_lst_add_var(t_var **lst, t_var *new);
 
-//List
-int		strarr_len(char **array);
+// lst_del.c
+void		var_lst_clear(t_var **lst);
+void		var_lst_delete_node(t_var *node);
+void		var_lst_delete_var(t_var **lst, char *name);
 
+// lst_get.c
+size_t		var_lst_size(t_var *lst);
+t_var		*var_lst_find_var(char *name, t_var *lst);
 
-//Utils
-int		index_new_line(char *str);
-int		index_of(char *str, char *search, int len);
-int		outlst_len(t_o_file *lst);
-int		contains_only(char *str, char c);
+int			get_exit_status(void);
 
-/* EXECUTE */
+void		init(char **envp);
+void		get_comman(char *usr_in, t_shell *comman);
+void		exec(t_shell *st_shell, char **envp, t_pipe *pipe_lst);
+void		set_exit_status(int exit_status);
+t_var		**set_node(void);
 
-//Execute
-void	execute(t_cmdlst *lst, t_mini *mini);
+// signal_setup.c
+void		sig_setup(void);
+void		child_sig_setup(void);
+void		heredoc_sig_setup(void);
 
-//Execute Utils
-int		is_exit(t_cmdlst *lst);
+// signal_handler.c
+void		signal_handler(int signal);
+void		child_signal_handler(int signal);
+void		heredoc_signal_handler(int signal);
 
-/* BUILT IN*/
-//echo
-int		ft_echo(char **s, t_mini *mini);
-//PWD
-int		ft_pwd(t_mini *mini);
-//Exit
-void	ft_exit(t_mini *mem, t_cmdlst *lst);
-//Env
-void	ft_env(t_mini *mini);
-//Unset
-int		ft_unset(t_mini *mini, char **args);
-//Export
-int		ft_export(t_mini *mini, char **args);
-//Cd
-void	ft_cd(char **cmd, t_mini *mini);
+// frees_and_closes.c
+void		close_fds(t_shell *st_shell);
+void		close_pipes(t_shell *st_shell);
+void		cmd_error(t_shell *st_shell, char **paths);
+void		free_args_error(t_shell *st_shell, char *message);
+t_bool		free_return(char *str_free);
+
+// error.c
+t_bool		generic_error(int exit_status, char *locale, char *message);
+void		pipe_syntax_error(void);
+int			error_syntax(char *str);
+
+extern t_var	**g_env;
 
 #endif

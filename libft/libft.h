@@ -6,7 +6,7 @@
 /*   By: imurugar <imurugar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 15:54:11 by imurugar          #+#    #+#             */
-/*   Updated: 2022/09/13 15:54:11 by imurugar         ###   ########.fr       */
+/*   Updated: 2023/05/17 04:05:45 by imurugar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,10 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 8192	// 2^13 bytes
+# endif
 
 typedef struct s_list
 {
@@ -74,5 +78,12 @@ char		*ft_strncpy(char *dest, char *src, unsigned int n);
 char		*ft_strcat(char *dest, char *src);
 char		*ft_strcdup(const char *s1, int c);
 char		*ft_strcdup_end(const char *s1, int c);
+char		**ft_word_split(char const *str, int (*is_delimiter)(char));
+int			ft_isspace(char c);
+void		ft_free_char_matrix(char ***m);
+long long	ft_atoll(const char *s);
+char		*get_next_line(int fd);
+void		ft_null_free(void **p);
+void		ft_free_matrix(void ***p, size_t line_count);
 
 #endif

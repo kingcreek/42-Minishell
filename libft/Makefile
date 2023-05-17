@@ -6,7 +6,7 @@
 #    By: imurugar <imurugar@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/14 17:33:33 by imurugar          #+#    #+#              #
-#    Updated: 2023/05/12 16:25:36 by imurugar         ###   ########.fr        #
+#    Updated: 2023/05/17 04:05:53 by imurugar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,8 @@ SRCS	=	ft_atoi.c ft_bzero.c ft_calloc.c ft_isalnum.c ft_isalpha.c ft_isascii.c \
 			ft_strldup.c \
 			ft_lstadd_back_bonus.c ft_lstadd_front_bonus.c ft_lstclear_bonus.c ft_lstdelone_bonus.c ft_lstiter_bonus.c \
 			ft_lstlast_bonus.c ft_lstmap_bonus.c ft_lstnew_bonus.c ft_lstsize_bonus.c ft_contains_only.c ft_strncpy.c \
-			ft_strcat.c ft_strcdup.c ft_strcdup_end.c
+			ft_strcat.c ft_strcdup.c ft_strcdup_end.c ft_word_split.c ft_isspace.c ft_free_char_matrix.c \
+			ft_atoll.c get_next_line.c ft_null_free.c ft_free_matrix.c
 
 
 BONUS_SRCS	=	ft_lstadd_back_bonus.c ft_lstadd_front_bonus.c ft_lstclear_bonus.c ft_lstdelone_bonus.c ft_lstiter_bonus.c \
