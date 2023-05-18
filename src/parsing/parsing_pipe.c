@@ -6,7 +6,7 @@
 /*   By: imurugar <imurugar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 16:53:49 by imurugar          #+#    #+#             */
-/*   Updated: 2023/05/17 06:13:32 by imurugar         ###   ########.fr       */
+/*   Updated: 2023/05/18 03:45:52 by imurugar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,24 @@ static t_bool	has_pipe_syntax_error(char *usr_in)
 	return (FALSE);
 }
 
+t_bool	is_empty_str(char *usr_in)
+{
+	char	*aux;
+
+	if (!usr_in || !*usr_in)
+		return (TRUE);
+	aux = ft_strtrim(usr_in, WHITE_SPACE_CHARS);
+	if (!aux)
+		return (TRUE);
+	if (!*aux)
+	{
+		free(aux);
+		return (TRUE);
+	}
+	free(aux);
+	return (FALSE);
+}
+
 t_pipe	*pipe_parse(char *usr_in, t_shell *st_shell)
 {
 	t_pipe	*lst;
@@ -109,22 +127,4 @@ t_pipe	*pipe_parse(char *usr_in, t_shell *st_shell)
 	pipe_lst_add_back(&lst, pipe_lst_new(ft_substr(usr_in, 0, inx)));
 	st_shell->lst_size = pipe_lst_size(lst);
 	return (lst);
-}
-
-t_bool	is_empty_str(char *usr_in)
-{
-	char	*aux;
-
-	if (!usr_in || !*usr_in)
-		return (TRUE);
-	aux = ft_strtrim(usr_in, WHITE_SPACE_CHARS);
-	if (!aux)
-		return (TRUE);
-	if (!*aux)
-	{
-		free(aux);
-		return (TRUE);
-	}
-	free(aux);
-	return (FALSE);
 }

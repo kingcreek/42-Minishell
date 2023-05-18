@@ -6,7 +6,7 @@
 /*   By: imurugar <imurugar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 16:53:58 by imurugar          #+#    #+#             */
-/*   Updated: 2023/05/17 04:13:31 by imurugar         ###   ########.fr       */
+/*   Updated: 2023/05/18 04:58:02 by imurugar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,37 @@ t_bool	check_paths(t_shell *st_shell)
 	return (FALSE);
 }
 
+static t_bool	contains_only_quotes(t_shell *st_shell, const char *str)
+{
+	int	double_quote_count;
+	int	single_quote_count;
+
+	double_quote_count = 0;
+	single_quote_count = 0;
+	while (*str != '\0')
+	{
+		if (*str == '"')
+			double_quote_count++;
+		else if (*str == '\'')
+			single_quote_count++;
+		else if (!ft_isspace(*str))
+			return (FALSE);
+		str++;
+	}
+	if (double_quote_count == 2 || single_quote_count == 2)
+	{
+		st_shell->exit_status = 127;
+		cmd_error(st_shell, NULL);
+		return (TRUE);
+	}
+	return (FALSE);
+}
+
 t_bool	recognizer_cmd(t_pipe *pipe_lst, t_shell *st_shell)
 {
 	st_shell->args = ft_word_split(pipe_lst->str, ft_isspace);
+	if (contains_only_quotes(st_shell, pipe_lst->str) == TRUE)
+		return (FALSE);
 	remove_args_quote(st_shell->args);
 	if (st_shell->args[0][0] == '/' ||
 		(st_shell->args[0][0] == '.' && st_shell->args[0][1] == '/'))
@@ -86,12 +114,9 @@ t_bool	recognizer_cmd(t_pipe *pipe_lst, t_shell *st_shell)
 			st_shell->cmd = ft_strdup(st_shell->args[0]);
 			return (TRUE);
 		}
-		else
-		{
-			free_args_error(st_shell, ERROR_PERMI);
-			st_shell->exit_status = 126;
-			return (FALSE);
-		}
+		free_args_error(st_shell, ERROR_PERMI);
+		st_shell->exit_status = 126;
+		return (FALSE);
 	}
 	return (check_paths(st_shell));
 }
