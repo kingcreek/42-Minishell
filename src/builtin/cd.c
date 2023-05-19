@@ -6,7 +6,7 @@
 /*   By: imurugar <imurugar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 16:52:55 by imurugar          #+#    #+#             */
-/*   Updated: 2023/05/17 04:07:45 by imurugar         ###   ########.fr       */
+/*   Updated: 2023/05/19 09:08:18 by imurugar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,27 @@ static t_bool	is_valid_input(char **words)
 	return (TRUE);
 }
 
+static int	process_dash(char *unquoted_path, char **words)
+{
+	t_var	*iterator;
+
+	if (ft_strcmp(unquoted_path, "-") == 0)
+	{
+		iterator = *g_env;
+		if (!iterator || !var_lst_find_var("OLDPWD", iterator))
+		{
+			set_exit_status(EXIT_FAILURE);
+			ft_putendl_fd("cd: OLDPWD not set", 2);
+		}
+		else
+			ft_putendl_fd(var_lst_find_var("OLDPWD", iterator)->value, 2);
+		free(unquoted_path);
+		ft_free_char_matrix(&words);
+		return (1);
+	}
+	return (0);
+}
+
 void	ft_cd(char *usr_in)
 {
 	char	**words;
@@ -69,6 +90,8 @@ void	ft_cd(char *usr_in)
 	unquoted_path = NULL;
 	if (words[1])
 		unquoted_path = remove_quotes_from_word(words[1], ft_strlen(words[1]));
+	if (process_dash(unquoted_path, words) == 1)
+		return ;
 	old_pwd = getcwd(NULL, 0);
 	var_lst_add_var(g_env, var_lst_new(ft_strdup("OLDPWD"), old_pwd));
 	change_directory(unquoted_path);
