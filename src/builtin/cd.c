@@ -6,7 +6,7 @@
 /*   By: imurugar <imurugar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 16:52:55 by imurugar          #+#    #+#             */
-/*   Updated: 2023/05/19 09:08:18 by imurugar         ###   ########.fr       */
+/*   Updated: 2023/06/30 11:41:18 by imurugar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,9 @@ void	ft_cd(char *usr_in)
 	unquoted_path = NULL;
 	if (words[1])
 		unquoted_path = remove_quotes_from_word(words[1], ft_strlen(words[1]));
-	if (process_dash(unquoted_path, words) == 1)
-		return ;
+	if (unquoted_path != NULL)
+		if (process_dash(unquoted_path, words) == 1)
+			return ;
 	old_pwd = getcwd(NULL, 0);
 	var_lst_add_var(g_env, var_lst_new(ft_strdup("OLDPWD"), old_pwd));
 	change_directory(unquoted_path);
