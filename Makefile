@@ -40,6 +40,7 @@ SRCS	=	main.c \
 			$(BUILTIN_DIR)env.c \
 			$(BUILTIN_DIR)exit.c \
 			$(BUILTIN_DIR)export.c \
+			$(BUILTIN_DIR)export_shorter.c \
 			$(BUILTIN_DIR)pwd.c \
 			$(BUILTIN_DIR)unset.c \
 			$(ERR_FREE)error.c \

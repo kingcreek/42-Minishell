@@ -1,38 +1,69 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: imurugar <imurugar@student.42madrid.com    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/16 16:53:43 by imurugar          #+#    #+#             */
-/*   Updated: 2023/05/18 04:33:57 by imurugar         ###   ########.fr       */
-/*                                                                            */
+/*																			*/
+/*														:::	  ::::::::   */
+/*   parsing.c										  :+:	  :+:	:+:   */
+/*													+:+ +:+		 +:+	 */
+/*   By: imurugar <imurugar@student.42madrid.com	+#+  +:+	   +#+		*/
+/*												+#+#+#+#+#+   +#+		   */
+/*   Created: 2023/05/16 16:53:43 by imurugar		  #+#	#+#			 */
+/*   Updated: 2023/07/05 19:32:01 by imurugar		 ###   ########.fr	   */
+/*																			*/
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static int	count_pipes(t_pipe *pipe_lst)
+{
+	int		count;
+	t_pipe	*current;
+
+	count = 0;
+	current = pipe_lst;
+	while (current != NULL)
+	{
+		count++;
+		current = current->next;
+	}
+	return (count);
+}
+
+static void	parsing_loop_helper(t_pipe *pipe_lst, t_shell *st_shell, int pipe_count)
+{
+	int		stat;
+
+	stat = recognize_redirect(pipe_lst, st_shell);
+	find_var_and_expand(&pipe_lst->str, FALSE);
+	if (is_empty_str(pipe_lst->str))
+		st_shell->exit_status = EXIT_SUCCESS;
+	else if (stat == EXIT_SUCCESS && is_builds(pipe_lst, st_shell) == FALSE)
+	{
+		fork_exec(st_shell, pipe_lst);
+		if (st_shell->lst_inx != pipe_count)
+		{
+			close(st_shell->infile);
+			close(st_shell->outfile);
+		}
+	}
+	else if (stat == -1)
+		return (pipe_lst_clear(&pipe_lst));
+}
+
 void	parsing_loop(t_pipe *pipe_lst, t_shell *st_shell)
 {
 	t_pipe	*aux;
-	int		stat;
+	int		pipe_count;
 
+	pipe_count = count_pipes(pipe_lst);
 	while (pipe_lst)
 	{
 		set_in_out(st_shell);
 		if (is_empty_str(pipe_lst->str))
+		{
 			st_shell->exit_status = EXIT_SUCCESS;
+		}
 		else
 		{
-			stat = recognize_redirect(pipe_lst, st_shell);
-			find_var_and_expand(&pipe_lst->str, FALSE);
-			if (is_empty_str(pipe_lst->str))
-				st_shell->exit_status = EXIT_SUCCESS;
-			else if (stat == EXIT_SUCCESS
-				&& is_builds(pipe_lst, st_shell) == FALSE)
-				fork_exec(st_shell, pipe_lst);
-			else if (stat == -1)
-				return (pipe_lst_clear(&pipe_lst));
+			parsing_loop_helper(pipe_lst, st_shell, pipe_count);
 		}
 		aux = pipe_lst;
 		pipe_lst = pipe_lst->next;

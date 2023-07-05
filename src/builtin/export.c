@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   export.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: imurugar <imurugar@student.42madrid.com    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/16 16:53:08 by imurugar          #+#    #+#             */
-/*   Updated: 2023/05/17 04:11:52 by imurugar         ###   ########.fr       */
-/*                                                                            */
+/*																			*/
+/*														:::	  ::::::::   */
+/*   export.c										   :+:	  :+:	:+:   */
+/*													+:+ +:+		 +:+	 */
+/*   By: imurugar <imurugar@student.42madrid.com	+#+  +:+	   +#+		*/
+/*												+#+#+#+#+#+   +#+		   */
+/*   Created: 2023/05/16 16:53:08 by imurugar		  #+#	#+#			 */
+/*   Updated: 2023/07/05 20:59:50 by imurugar		 ###   ########.fr	   */
+/*																			*/
 /* ************************************************************************** */
 
 #include "minishell.h"
@@ -70,27 +70,83 @@ static void	update_environment(t_var *export)
 	}
 }
 
-static void	print_declarations(int write_fd)
+void print_declarations(int write_fd)
 {
-	t_var	*iterator;
+	t_var *iterator = *g_env;
 
-	iterator = *g_env;
+	// Crear una copia de la lista g_env
+	t_var *copy = NULL;
+	t_var *current = NULL;
+
 	while (iterator)
 	{
-		if (ft_strncmp(iterator->name, "?", 2) != 0)
+		t_var *new_node = malloc(sizeof(t_var));
+		new_node->name = strdup(iterator->name);
+		new_node->value = (iterator->value != NULL) ? strdup(iterator->value) : NULL;
+		new_node->next = NULL;
+
+		if (copy == NULL)
+		{
+			copy = new_node;
+			current = copy;
+		}
+		else
+		{
+			current->next = new_node;
+			current = current->next;
+		}
+
+		iterator = iterator->next;
+	}
+
+	// Agregar "OLDPWD" si no existe
+	t_var *oldpwd_node = copy;
+	t_var *prev_node = NULL;
+	while (oldpwd_node != NULL && strcmp(oldpwd_node->name, "OLDPWD") < 0)
+	{
+		prev_node = oldpwd_node;
+		oldpwd_node = oldpwd_node->next;
+	}
+
+	if (oldpwd_node == NULL || strcmp(oldpwd_node->name, "OLDPWD") != 0)
+	{
+		t_var *new_node = malloc(sizeof(t_var));
+		new_node->name = strdup("OLDPWD");
+		new_node->value = NULL;
+		new_node->next = oldpwd_node;
+
+		if (prev_node == NULL)
+			copy = new_node;
+		else
+			prev_node->next = new_node;
+	}
+
+	// Ordenar la lista copiada
+	sort_variables(copy);
+
+	// Imprimir las declaraciones en orden alfabético
+	while (copy)
+	{
+		if (strncmp(copy->name, "?", 2) != 0)
 		{
 			ft_putstr_fd("declare -x ", write_fd);
-			ft_putstr_fd(iterator->name, write_fd);
-			if (iterator->value != NULL)
+			ft_putstr_fd(copy->name, write_fd);
+			if (copy->value != NULL)
 			{
 				ft_putstr_fd("=\"", write_fd);
-				ft_putstr_fd(iterator->value, write_fd);
+				ft_putstr_fd(copy->value, write_fd);
 				ft_putstr_fd("\"", write_fd);
 			}
 			ft_putchar_fd('\n', write_fd);
 		}
-		iterator = iterator->next;
+
+		t_var *next = copy->next;
+		free(copy->name);
+		free(copy->value);
+		free(copy);
+		copy = next;
 	}
+
 	set_exit_status(EXIT_SUCCESS);
 }
 
