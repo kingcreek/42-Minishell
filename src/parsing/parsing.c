@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*																			*/
-/*														:::	  ::::::::   */
-/*   parsing.c										  :+:	  :+:	:+:   */
-/*													+:+ +:+		 +:+	 */
-/*   By: imurugar <imurugar@student.42madrid.com	+#+  +:+	   +#+		*/
-/*												+#+#+#+#+#+   +#+		   */
-/*   Created: 2023/05/16 16:53:43 by imurugar		  #+#	#+#			 */
-/*   Updated: 2023/07/05 19:32:01 by imurugar		 ###   ########.fr	   */
-/*																			*/
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: imurugar <imurugar@student.42madrid.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/16 16:53:43 by imurugar          #+#    #+#             */
+/*   Updated: 2023/07/06 13:42:48 by imurugar         ###   ########.fr       */
+/*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
@@ -27,7 +27,7 @@ static int	count_pipes(t_pipe *pipe_lst)
 	return (count);
 }
 
-static void	parsing_loop_helper(t_pipe *pipe_lst, t_shell *st_shell, int pipe_count)
+static void	parsing_loop_h(t_pipe *pipe_lst, t_shell *st_shell, int pipe_count)
 {
 	int		stat;
 
@@ -63,7 +63,7 @@ void	parsing_loop(t_pipe *pipe_lst, t_shell *st_shell)
 		}
 		else
 		{
-			parsing_loop_helper(pipe_lst, st_shell, pipe_count);
+			parsing_loop_h(pipe_lst, st_shell, pipe_count);
 		}
 		aux = pipe_lst;
 		pipe_lst = pipe_lst->next;

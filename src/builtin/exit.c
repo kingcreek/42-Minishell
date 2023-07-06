@@ -6,7 +6,7 @@
 /*   By: imurugar <imurugar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 16:53:05 by imurugar          #+#    #+#             */
-/*   Updated: 2023/05/17 04:10:19 by imurugar         ###   ########.fr       */
+/*   Updated: 2023/07/05 13:04:40 by imurugar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static void	exit_handler(char **params, t_pipe *pipe_lst, t_builtin *builds)
 	else if (!is_considered_digit_str(params[1]))
 	{
 		exit_error(params[1], "numeric argument required");
-		exit_status = BUILTIN_MISUSE_CODE;
+		exit_status = 255;
 	}
 	else if (params[2])
 	{

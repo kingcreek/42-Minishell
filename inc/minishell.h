@@ -6,7 +6,7 @@
 /*   By: imurugar <imurugar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 03:23:48 by imurugar          #+#    #+#             */
-/*   Updated: 2023/07/05 20:56:24 by imurugar         ###   ########.fr       */
+/*   Updated: 2023/07/06 16:15:42 by imurugar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # include <dirent.h>
 # include <signal.h>
 
-# define LULUSHELL			 "👾 Minishell 👾 > "
+# define LOLSHELL			 "👾 Minishell 👾 > "
 # define BUILDS_COUNT		 7
 # define BUILTIN_MISUSE_CODE 2
 # define SYNTAX_ERROR		 "syntax error near unexpected token "
@@ -97,6 +97,9 @@ void		ft_cd(char *usr_in);
 void		ft_exit(char *usr_in, t_pipe *pipe_lst, t_builtin *builds,
 				t_bool print);
 void		ft_export(char *usr_in, int write_fd);
+void		print_helper(t_var *copy, int write_fd);
+void		add_oldpwd(t_var **copy);
+void		copy_env(t_var **copy);
 t_var		*sort_variables(const t_var *head);
 void		ft_unset(char *usr_in);
 

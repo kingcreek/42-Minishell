@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*																			*/
-/*														:::	  ::::::::   */
-/*   init.c											 :+:	  :+:	:+:   */
-/*													+:+ +:+		 +:+	 */
-/*   By: imurugar <imurugar@student.42madrid.com	+#+  +:+	   +#+		*/
-/*												+#+#+#+#+#+   +#+		   */
-/*   Created: 2023/05/16 16:51:47 by imurugar		  #+#	#+#			 */
-/*   Updated: 2023/07/05 20:01:16 by imurugar		 ###   ########.fr	   */
-/*																			*/
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: imurugar <imurugar@student.42madrid.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/16 16:51:47 by imurugar          #+#    #+#             */
+/*   Updated: 2023/07/06 16:26:59 by imurugar         ###   ########.fr       */
+/*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
@@ -33,32 +33,40 @@ static t_var	**get_environment_lst(char **envp)
 	return (env_lst);
 }
 
-void init(char **envp)
+static void	init_helper(int *saved_stdin, int *saved_stdout)
 {
-	char *std_in;
-	char *shell_name;
-	t_shell st_shell;
+	char	*std_in;
+	t_shell	st_shell;
+	char	*shell_name;
 
-	shell_name = LULUSHELL;
-	g_env = get_environment_lst(envp);
-	set_exit_status(EXIT_SUCCESS);
-	sig_setup();
-	int saved_stdin = dup(STDIN_FILENO);
-	int saved_stdout = dup(STDOUT_FILENO);
+	shell_name = LOLSHELL;
 	while (1)
 	{
 		std_in = readline(shell_name);
 		if (std_in == NULL)
 		{
 			ft_putendl_fd("exit", 1);
-			break;
+			break ;
 		}
 		add_history(std_in);
 		parsing(std_in, &st_shell);
 		free(std_in);
-		dup2(saved_stdin, STDIN_FILENO);
-		dup2(saved_stdout, STDOUT_FILENO);
+		dup2(*saved_stdin, STDIN_FILENO);
+		dup2(*saved_stdout, STDOUT_FILENO);
 	}
+}
+
+void	init(char **envp)
+{
+	int		saved_stdin;
+	int		saved_stdout;
+
+	g_env = get_environment_lst(envp);
+	set_exit_status(EXIT_SUCCESS);
+	sig_setup();
+	saved_stdin = dup(STDIN_FILENO);
+	saved_stdout = dup(STDOUT_FILENO);
+	init_helper(&saved_stdin, &saved_stdout);
 	rl_clear_history();
 	close(saved_stdin);
 	close(saved_stdout);

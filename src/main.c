@@ -6,7 +6,7 @@
 /*   By: imurugar <imurugar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 16:51:38 by imurugar          #+#    #+#             */
-/*   Updated: 2023/07/05 21:02:32 by imurugar         ###   ########.fr       */
+/*   Updated: 2023/05/17 03:46:33 by imurugar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,3 @@ int	get_exit_status(void)
 	exit_code = ft_atoi(current_status->value);
 	return (exit_code);
 }
-
-/*
-
-archivos modificados:
-init.c en la funcion init
-archivo export y el que he creado para ordenar la lista
-archivo parsing
-
-*/

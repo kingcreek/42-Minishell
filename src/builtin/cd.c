@@ -6,7 +6,7 @@
 /*   By: imurugar <imurugar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 16:52:55 by imurugar          #+#    #+#             */
-/*   Updated: 2023/06/30 11:41:18 by imurugar         ###   ########.fr       */
+/*   Updated: 2023/07/05 14:49:32 by imurugar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	ft_cd(char *usr_in)
 	if (!is_valid_input(words))
 	{
 		ft_free_char_matrix(&words);
-		return (set_exit_status(EXIT_FAILURE));
+		return (set_exit_status(0));
 	}
 	unquoted_path = NULL;
 	if (words[1])

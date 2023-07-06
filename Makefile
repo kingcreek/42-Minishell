@@ -14,7 +14,6 @@
 SRCS_DIR =		./src/
 OBJ_DIR	 =		./obj/
 INC_DIR	 =		./inc/
-
 # /* ~~~~~~~ MAIN DIRS ~~~~~~~ */
 BUILTIN_DIR 	=	builtin/
 ERR_FREE 		=	errors_frees/
@@ -22,15 +21,12 @@ PARSER_DIR 		=	parsing/
 PIPE_DIR 		=	pipe_lst/
 SIGNAL_DIR	  	=	signals/
 VAR_LST_DIR	  	=	var_lst/
-
 # /* ~~~~~~~ SUB DIRS ~~~~~~~ */
 BUILDS_DIR 		=	$(PARSER_DIR)builds/
 EXPANSION_DIR 	=	$(PARSER_DIR)expansion/
 REDIRECTS_DIR 	=	$(PARSER_DIR)redirects_in_out/
-
 # /* ~~~~~~~ HEADER FILES ~~~~~~~ */
 INC 			=   minishell.h
-
 # /* ~~~~~~~ SOURCE FILES ~~~~~~~ */
 SRCS	=	main.c \
 			init.c \
@@ -40,7 +36,7 @@ SRCS	=	main.c \
 			$(BUILTIN_DIR)env.c \
 			$(BUILTIN_DIR)exit.c \
 			$(BUILTIN_DIR)export.c \
-			$(BUILTIN_DIR)export_shorter.c \
+			$(BUILTIN_DIR)export_helper.c \
 			$(BUILTIN_DIR)pwd.c \
 			$(BUILTIN_DIR)unset.c \
 			$(ERR_FREE)error.c \
@@ -63,13 +59,11 @@ SRCS	=	main.c \
 			$(VAR_LST_DIR)var_lst_add.c \
 			$(VAR_LST_DIR)var_lst_del.c \
 			$(VAR_LST_DIR)var_lst_get.c
-
 # /* ~~~~~~~ INCLUDING LIBFT ~~~~~~~ */
 LIBFT_DIR	= libft/
 LIBFT_MAKE	= Makefile
 LIBFT_PATH	= ${LIBFT_DIR}/libft.a
 LIBFT_H_INC	:=	-I $(LIBFT_DIR)/inc/
-
 # /* ~~~~~~~ INCLUDE CONFIG ~~~~~~~ */
 OBJ_FILES   = $(SRCS:.c=.o)
 SRC			= $(addprefix $(SRCS_DIR), $(SRCS))
@@ -77,28 +71,23 @@ OBJS		= $(addprefix $(OBJ_DIR), $(OBJ_FILES))
 INCLUDES	= $(addprefix $(INC_DIR), $(INC))
 OBJ_DIRS	:= $(sort $(dir $(OBJS)))
 #INCLUDES	= $(H_INCLUDES)# $(LIBFT_H_INC)
-
 # /* ~~~~~~~ TESTING FLAGS ~~~~~~~ */
  SANITIZE =
  SANITIZE = -g3 -fsanitize=address
 # SANITIZE = -g3 -fsanitize=thread
-
 # /* ~~~~~~~ COMPILING INFO ~~~~~~~ */
 GCC = gcc
-CFLAGS = -Wall -Wextra -Werror -lreadline -g $(SANITIZE)
-LFLAGS:= -L $(LIBFT_DIR) -lft
-
+CFLAGS =   -Wall -Wextra -Werror   $(SANITIZE) -I /Users/$(USER)/.brew/opt/readline/include/  #-I/Users/$(USER)/.brew//opt/readline/include
+LFLAGS:= -L $(LIBFT_DIR) -lft -L /Users/$(USER)/.brew/opt/readline/lib -I /Users/$(USER)/.brew/opt/readline/include/ -lreadline
 # /* ~~~~~~~ OTHER ~~~~~~~ */
 NAME = minishell
 RM = rm -f
-
 # /* ~~~~~~~ Colors ~~~~~~~ */
 RED:="\033[1;31m"
 GREEN:="\033[1;32m"
 PURPLE:="\033[1;35m"
 CYAN:="\033[1;36m"
 EOC:="\033[0;0m"
-
 # /* ~~~~~~~ GENERATE DIRS ~~~~~~~ */
 $(OBJ_DIR)%.o: $(SRCS_DIR)%.c $(INCLUDES)
 	@mkdir -p $(@D)
@@ -113,25 +102,21 @@ $(NAME): $(OBJS)
 	@echo $(CYAN) "[Compiling libft]" $(RED)
 	@cd $(LIBFT_DIR) && $(MAKE)
 	@echo $(PURPLE) "[Compiling $@]" $(RED)
-	@$(GCC) $(OBJS) $(CFLAGS) $(LFLAGS) -o $(NAME) $(INCLUDES)
+	$(GCC) $(OBJS) $(CFLAGS) $(LFLAGS) -o $(NAME)
 	@echo $(GREEN) "[FINISHED OK]" $(EOC)
 	@echo "$$CUP"
 	@echo $(CYAN) "[MINISHELL BY ARI AND KING]" $(EOC)
-
+	
 clean:
-	@echo $(PURPLE) "[🧹Cleaning...🧹]" $(EOC)
+	@echo $(PURPLE) "[:escoba:Cleaning...:escoba:]" $(EOC)
 	@${RM} -Rf $(OBJ_DIR)
 	@make -C ${LIBFT_DIR} -f ${LIBFT_MAKE} fclean
-
 fclean: clean
-	@echo $(PURPLE) "[🧹FCleaning...🧹]" $(EOC)
+	@echo $(PURPLE) "[:escoba:FCleaning...:escoba:]" $(EOC)
 	${RM} -f $(NAME)
-
 re: fclean all
-
 cup:
 	@echo "$$CUP"
-
 define CUP
 
 _________________¶¶¶1___¶¶¶____¶¶¶1_______________

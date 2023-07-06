@@ -6,7 +6,7 @@
 /*   By: imurugar <imurugar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 16:51:58 by imurugar          #+#    #+#             */
-/*   Updated: 2023/07/05 21:02:21 by imurugar         ###   ########.fr       */
+/*   Updated: 2023/07/06 15:24:36 by imurugar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ static void	wait_for_child(int pid, t_shell *st_shell)
 	int		exit_status;
 
 	exit_status = 0;
-	waitpid(pid, &exit_status, 0);
 	waitpid(pid, &exit_status, 0);
 	if (!WIFSIGNALED(exit_status))
 	{
