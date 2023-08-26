@@ -6,7 +6,7 @@
 /*   By: imurugar <imurugar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 16:53:08 by imurugar          #+#    #+#             */
-/*   Updated: 2023/07/06 16:17:11 by imurugar         ###   ########.fr       */
+/*   Updated: 2023/08/26 05:09:00 by imurugar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,15 +73,16 @@ static void	update_environment(t_var *export)
 void	print_declarations(int write_fd)
 {
 	t_var	*copy;
+	t_var	*tmp;
 	t_var	*next;
 
-	copy = NULL;
-	copy_env(&copy);
-	add_oldpwd(&copy);
-	sort_variables(copy);
+	tmp = NULL;
+	copy_env(&tmp);
+	add_oldpwd(&tmp);
+	copy = sort_variables(tmp);
 	while (copy)
 	{
-		if (strncmp(copy->name, "?", 2) != 0)
+		if (ft_strncmp(copy->name, "?", 2) != 0)
 			print_helper(copy, write_fd);
 		next = copy->next;
 		free(copy->name);

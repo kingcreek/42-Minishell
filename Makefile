@@ -72,12 +72,12 @@ INCLUDES	= $(addprefix $(INC_DIR), $(INC))
 OBJ_DIRS	:= $(sort $(dir $(OBJS)))
 #INCLUDES	= $(H_INCLUDES)# $(LIBFT_H_INC)
 # /* ~~~~~~~ TESTING FLAGS ~~~~~~~ */
- SANITIZE =
- SANITIZE = -g3 -fsanitize=address
+ SANITIZE = -g
+# SANITIZE = -g3 -fsanitize=address
 # SANITIZE = -g3 -fsanitize=thread
 # /* ~~~~~~~ COMPILING INFO ~~~~~~~ */
 GCC = gcc
-CFLAGS =   -Wall -Wextra -Werror   $(SANITIZE) -I /Users/$(USER)/.brew/opt/readline/include/  #-I/Users/$(USER)/.brew//opt/readline/include
+CFLAGS =   -Wall -Wextra -Werror $(SANITIZE) -I /Users/$(USER)/.brew/opt/readline/include/  #-I/Users/$(USER)/.brew//opt/readline/include
 LFLAGS:= -L $(LIBFT_DIR) -lft -L /Users/$(USER)/.brew/opt/readline/lib -I /Users/$(USER)/.brew/opt/readline/include/ -lreadline
 # /* ~~~~~~~ OTHER ~~~~~~~ */
 NAME = minishell

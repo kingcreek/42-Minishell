@@ -6,7 +6,7 @@
 /*   By: imurugar <imurugar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 15:29:13 by imurugar          #+#    #+#             */
-/*   Updated: 2023/07/06 16:19:00 by imurugar         ###   ########.fr       */
+/*   Updated: 2023/08/26 05:01:36 by imurugar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	sort_helper(t_var *temp, t_var *current)
 {
 	while (temp->next != NULL && \
-		strcmp(current->name, temp->next->name) >= 0)
+		ft_strcmp(current->name, temp->next->name) >= 0)
 		temp = temp->next;
 	current->next = temp->next;
 	temp->next = current;
@@ -35,7 +35,7 @@ t_var	*sort_variables(const t_var *head)
 	while (current != NULL)
 	{
 		next = current->next;
-		if (sorted == NULL || strcmp(current->name, sorted->name) < 0)
+		if (sorted == NULL || ft_strcmp(current->name, sorted->name) < 0)
 		{
 			current->next = sorted;
 			sorted = current;
@@ -89,7 +89,7 @@ void	copy_env(t_var **copy)
 	while (iterator)
 	{
 		new_node = malloc(sizeof(t_var));
-		new_node->name = strdup(iterator->name);
+		new_node->name = ft_strdup(iterator->name);
 		if (iterator->value != NULL)
 			new_node->value = ft_strdup(iterator->value);
 		new_node->next = NULL;
