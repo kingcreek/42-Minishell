@@ -27,7 +27,7 @@ static int	count_pipes(t_pipe *pipe_lst)
 	return (count);
 }
 
-static void	parsing_loop_h(t_pipe *pipe_lst, t_shell *st_shell, int pipe_count)
+static int	parsing_loop_h(t_pipe *pipe_lst, t_shell *st_shell, int pipe_count)
 {
 	int		stat;
 
@@ -45,7 +45,8 @@ static void	parsing_loop_h(t_pipe *pipe_lst, t_shell *st_shell, int pipe_count)
 		}
 	}
 	else if (stat == -1)
-		return (pipe_lst_clear(&pipe_lst));
+		return (pipe_lst_clear(&pipe_lst), 0);
+	return (1);
 }
 
 void	parsing_loop(t_pipe *pipe_lst, t_shell *st_shell)
@@ -63,7 +64,8 @@ void	parsing_loop(t_pipe *pipe_lst, t_shell *st_shell)
 		}
 		else
 		{
-			parsing_loop_h(pipe_lst, st_shell, pipe_count);
+			if (parsing_loop_h(pipe_lst, st_shell, pipe_count) == 0)
+				break;
 		}
 		aux = pipe_lst;
 		pipe_lst = pipe_lst->next;
